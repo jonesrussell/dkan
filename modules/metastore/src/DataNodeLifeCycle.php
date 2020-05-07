@@ -75,15 +75,9 @@ class DataNodeLifeCycle extends AbstractDataNodeLifeCycle {
     $metadata = $this->getMetaData();
     $host = \Drupal::request()->getHost();
     if (isset($metadata->data->downloadURL)) {
-      $newUrl = $metadata->data->downloadURL;
-      $parsedUrl = parse_url($newUrl);
-      if ($parsedUrl['host'] == $host) {
-        $parsedUrl['host'] = UrlHostTokenResolver::TOKEN;
-        $metadata->data->downloadURL = $this->unparseUrl($parsedUrl);
-        $this->setMetadata($metadata);
-      }
+      $metadata->data->downloadURL = Phase2::register($metadata->data->downloadURL);
+      $this->setMetadata($metadata);
     }
-
   }
 
   /**
